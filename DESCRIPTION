@@ -1,0 +1,10 @@
+Package: ApaTable
+Type: Package
+Title: A Quick Dirty APA Table for Regressions
+Version: 0.1.0
+Author: Wouldn't you like to know
+Maintainer: Susie Q. <susieq@gmail.com>
+Description: This takes regression models that were created using the lm function and puts them into a semi-correct APA table.
+License: None
+Encoding: UTF-8
+LazyData: true
