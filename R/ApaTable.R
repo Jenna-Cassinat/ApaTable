@@ -1,5 +1,5 @@
 LMApaTable <- function(
-  model, Bold = FALSE
+  model, Bold = FALSE, Quiet = FALSE
 ){
   ModOut <- summary(model)
   Coeff <-as.data.frame(ModOut$coefficients)
@@ -29,6 +29,9 @@ LMApaTable <- function(
     P <- ifelse(P < .001, "<.001", P)
     P <- gsub(pattern, ".", P, perl = TRUE)
     Row2 <- paste("|", VarName, "|", estimate, "|", SE, "|", P, "|")
+    if (Quiet == FALSE){
+      cat(Return)
+    }
     Return <- paste(Return, Row2, sep = "\n")
 
   }
@@ -37,5 +40,63 @@ LMApaTable <- function(
 
 
 
+AOVApaTable <- function(
+  ..., data, Bold = FALSE, Quiet = FALSE
+){
+  models <- list(...)
+
+  dvcheck <- c()
+
+  for (p in models){
+    GroupVar <- p$call$formula[[3]]
+    dvcheck <- c(dvcheck,GroupVar)
+  }
+
+  uniqueVar <- length(unique(dvcheck))
+
+  if(uniqueVar > 1){
+    stop("The grouping variables in these models do not match; change models so that each have same grouping variable.")
+  }
+
+  datalength <- length(data)
+
+  if(datalength != 1 | datalength != length(models)){
+    stop("Make sure that either all data frames utilized are the same data, or the number of data frames matches the number of models provided")
+  }
+
+
+  return(uniqueVar)
+}
+
+AOVApaTable(test1, test2, test3)
+
+
+
+library(haven)
+data <- read_sas("/Users/Jenna/Box/Dissertation/FRP Study/Data/threefocus.sas7bdat")
+
+
+
+test1 <- aov(osintim11 ~ GENDCOMP, data = data)
+test2 <- aov(osdeide11 ~ GENDCOMP, data = data)
+test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
+test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
+test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
+test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
+
+
+
+
+
+
+
+
+
+test3 <- aov(osmodele11 ~ GENDCOMP, data = data)summary(test)
+
+#AOVApaTable(Nodel1, mode2, model3, OPTIONS, data = list(data1, data2, data3))
+
+group1 <- subset(data, data$GENDCOMP == 1)
+psych::describe(group1$osintim11)$sd
 
 
