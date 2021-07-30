@@ -11,23 +11,22 @@ LMApaTable <- function(
   for(
     x in 1:nrow(Coeff)
   ){
-    pattern <- "(?<=\\-)?0\\."
     VarName <- rownames(Coeff)[x]
     EstNeg <- ifelse(Coeff$Estimate[x] <0, 1, 0)
     estimate <- round(Coeff$Estimate[x], 2)
     estimate <- ifelse(estimate == 0, ".00", estimate)
     estimate <- ifelse(EstNeg == 1 & estimate == ".00", "-.00", estimate)
-    estimate <- gsub(pattern, ".", estimate, perl = TRUE)
+    estimate <- doublezero(estimate)
     SE <- round(Coeff$`Std. Error`[x], 2)
-    SE <- gsub(pattern, ".", SE, perl = TRUE)
+    SE <- doublezero(SE)
     P <- round(Coeff$`Pr(>|t|)`[x], 3)
     estimate <- ifelse(P < .05, paste0(estimate,"\\*"), estimate)
     estimate <- ifelse(P < .01, paste0(estimate,"\\*"), estimate)
     estimate <- ifelse(P < .001, paste0(estimate,"\\*"), estimate)
     if(Bold == TRUE){
-      estimate <- ifelse(P <.05, paste0("**",estimate, "**"), estimate)}
+      estimate <- BoldFunction(P, estimate)
     P <- ifelse(P < .001, "<.001", P)
-    P <- gsub(pattern, ".", P, perl = TRUE)
+    P <- doublezero(P)
     Row2 <- paste("|", VarName, "|", estimate, "|", SE, "|", P, "|")
     if (Quiet == FALSE){
       cat(Return)
@@ -40,49 +39,90 @@ LMApaTable <- function(
 
 
 
+
 AOVApaTable <- function(
-  ..., data, Bold = FALSE, Quiet = FALSE
+  ..., Bold = FALSE, Quiet = FALSE
 ){
   models <- list(...)
-
   dvcheck <- c()
 
   for (p in models){
     GroupVar <- p$call$formula[[3]]
     dvcheck <- c(dvcheck,GroupVar)
   }
-
   uniqueVar <- length(unique(dvcheck))
-
   if(uniqueVar > 1){
     stop("The grouping variables in these models do not match; change models so that each have same grouping variable.")
   }
 
-  datalength <- length(data)
+  Header <- "| Model |"
+  Next <- "|:----|"
 
-  if(datalength != 1 | datalength != length(models)){
-    stop("Make sure that either all data frames utilized are the same data, or the number of data frames matches the number of models provided")
+  FactorLevels <- levels(models[[1]]$model[[as.character(GroupVar)]])
+
+
+  for(k in FactorLevels){
+    DV1Name <- paste(k,"|")
+    Header <- paste(Header, DV1Name)
+    Next <- paste0(Next, ":--:|")
+  }
+
+  Table <- paste(Header, Next, sep= "\n")
+
+  for(b in models){
+    IV1 <- as.character(b$call$formula[[2]])
+    sumtest <- summary(b)
+    Pvalue <- sumtest[[1]][as.character(GroupVar),"Pr(>F)"]
+    if(Bold ==TRUE){
+      IV1 <- BoldFunction(Pvalue, IV1)}
+    Data <- b$model
+    RowText <- paste("|", IV1, "|")
+      for(r in FactorLevels){
+        Subdata <- subset(Data, Data[[as.character(GroupVar)]] == r)[[IV1]]
+        average <- round(mean(Subdata), 2)
+        average <- doublezero(average)
+        standD <- round(sd(Subdata), 2)
+        standD <- doublezero(standD)
+        form <- paste0(average, " (", standD, ")")
+        RowText <- paste(RowText, form, "|")
+      }
+Table <- paste(Table, RowText, sep = "\n")
+  }
+
+  if (Quiet == FALSE){
+    cat(Table)
   }
 
 
-  return(uniqueVar)
+
+
+  #return(uniqueVar)
 }
+
+
+
+
+
+
 
 AOVApaTable(test1, test2, test3)
 
 
 
+test <- aov(osintim11 ~ GENDCOMP, data = data)
+TukeyHSD(test, "GENDCOMP")
+
+
 library(haven)
 data <- read_sas("/Users/Jenna/Box/Dissertation/FRP Study/Data/threefocus.sas7bdat")
+data$GENDCOMP <- as.factor(data$GENDCOMP)
 
 
 
 test1 <- aov(osintim11 ~ GENDCOMP, data = data)
 test2 <- aov(osdeide11 ~ GENDCOMP, data = data)
 test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
-test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
-test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
-test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
+
 
 
 
