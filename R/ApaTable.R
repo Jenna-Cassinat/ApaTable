@@ -1,5 +1,5 @@
 LMApaTable <- function(
-  model, Bold = FALSE, Quiet = FALSE
+  model, Bold = FALSE, Quiet = FALSE, Return = FALSE
 ){
   ModOut <- summary(model)
   Coeff <-as.data.frame(ModOut$coefficients)
@@ -7,7 +7,7 @@ LMApaTable <- function(
   rownames(Coeff)[1] <- "Intercept"
   Header <- "| Variables | *b* | *SE* | *p* value|"
   Next <- "|:----|:----:|:----:|:----:|"
-  Return <- paste(Header, Next, sep = "\n")
+  Table <- paste(Header, Next, sep = "\n")
   for(
     x in 1:nrow(Coeff)
   ){
@@ -28,21 +28,25 @@ LMApaTable <- function(
       P <- ifelse(P < .001, "<.001", P)
       P <- doublezero(P)
       Row2 <- paste("|", VarName, "|", estimate, "|", SE, "|", P, "|")
-      Return <- paste(Return, Row2, sep = "\n")
+      Table <- paste(Table, Row2, sep = "\n")
 
     }
   }
   if (Quiet == FALSE){
-    cat(Return,"\n")
+    cat(Table,"\n")
   }
-  return(Return)
+  if (Return == TRUE){
+    return(Table)
+  }else{
+    invisible()
+  }
 }
 
 
 
 
 AOVApaTable <- function(
-  ..., Bold = FALSE, Quiet = FALSE
+  ..., Bold = FALSE, Quiet = FALSE, Return = FALSE
 ){
   models <- list(...)
   dvcheck <- c()
@@ -129,8 +133,11 @@ AOVApaTable <- function(
   if (Quiet == FALSE){
     cat(Table,"\n")
   }
-
+if (Return == TRUE){
   return(Table)
+}else{
+  invisible()
+}
 }
 
 
