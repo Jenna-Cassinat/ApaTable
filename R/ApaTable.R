@@ -111,7 +111,7 @@ AOVApaTable <- function(
         postp <- rowsub2$`p adj`
 
 
-        if(postp <.5){
+        if(postp <.05){
           supvec <- c(supvec, choose)
         }
 
@@ -122,8 +122,6 @@ AOVApaTable <- function(
         form <- paste(form, supvec)
       }
       RowText <- paste(RowText, form, "|")
-
-
     }
     Table <- paste(Table, RowText, sep = "\n")
   }
@@ -137,42 +135,5 @@ AOVApaTable <- function(
 
 
 
-
-
-
-
-AOVApaTable(test1, test2, test3)
-
-
-
-test <- aov(osintim11 ~ GENDCOMP, data = data)
-TukeyHSD(test, "GENDCOMP")
-
-
-library(haven)
-data <- read_sas("/Users/Jenna/Box/Dissertation/FRP Study/Data/threefocus.sas7bdat")
-data$GENDCOMP <- as.factor(data$GENDCOMP)
-
-
-
-test1 <- aov(osintim11 ~ GENDCOMP, data = data)
-test2 <- aov(osdeide11 ~ GENDCOMP, data = data)
-test3 <- aov(osmodele11 ~ GENDCOMP, data = data)
-
-
-
-
-
-
-
-
-
-
-test3 <- aov(osmodele11 ~ GENDCOMP, data = data)summary(test)
-
-#AOVApaTable(Nodel1, mode2, model3, OPTIONS, data = list(data1, data2, data3))
-
-group1 <- subset(data, data$GENDCOMP == 1)
-psych::describe(group1$osintim11)$sd
 
 
