@@ -10,7 +10,10 @@ doublezero <- function(x){
   return(x)
 }
 
-
+super <- function(x){
+  x <- paste0("^", x, "^")
+  return(x)
+}
 
 
 

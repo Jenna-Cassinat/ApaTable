@@ -33,7 +33,7 @@ LMApaTable <- function(
     }
   }
   if (Quiet == FALSE){
-    cat(Return)
+    cat(Return,"\n")
   }
   return(Return)
 }
@@ -61,7 +61,6 @@ AOVApaTable <- function(
 
   FactorLevels <- levels(models[[1]]$model[[as.character(GroupVar)]])
 
-
   for(k in FactorLevels){
     DV1Name <- paste(k,"|")
     Header <- paste(Header, DV1Name)
@@ -78,24 +77,60 @@ AOVApaTable <- function(
       IV1 <- BoldFunction(Pvalue, IV1)}
     Data <- b$model
     RowText <- paste("|", IV1, "|")
+
+    post <- TukeyHSD(b, as.character(GroupVar))
+    post <- as.data.frame(post[[as.character(GroupVar)]])
+
     for(r in FactorLevels){
       Subdata <- subset(Data, Data[[as.character(GroupVar)]] == r)[[IV1]]
       average <- round(mean(Subdata), 2)
       average <- doublezero(average)
       standD <- round(sd(Subdata), 2)
       standD <- doublezero(standD)
+
+      pattern <- paste0("(^",r,"|",r,"$)")
+      rowsub <- subset(post, grepl(pattern,rownames(post)))
       form <- paste0(average, " (", standD, ")")
+      supvec <- c()
+
+      for (w in 1:nrow(rowsub)){
+        rowsub2 <- subset(rowsub, w == (1:nrow(rowsub)))
+        cellloc <- rownames(rowsub2)
+
+        left <- stringr::str_match_all(cellloc, paste0("^", r))[[1]][1]
+        right <- stringr::str_match_all(cellloc, paste0(r, "$"))[[1]][1]
+        if(is.na(left)){
+          left <- gsub(paste0("-", right), "", cellloc, fixed = TRUE)
+        }
+        if(is.na(right)){
+          right <- gsub(paste0(left, "-"), "", cellloc, fixed = TRUE)
+        }
+
+        choose <- ifelse(left == as.character(r), right, left)
+
+        postp <- rowsub2$`p adj`
+
+
+        if(postp <.5){
+          supvec <- c(supvec, choose)
+        }
+
+      }
+      supvec <- paste(supvec, collapse = ", ")
+      if(nchar(supvec)>0){
+        supvec <- super(supvec)
+        form <- paste(form, supvec)
+      }
       RowText <- paste(RowText, form, "|")
+
+
     }
     Table <- paste(Table, RowText, sep = "\n")
   }
 
   if (Quiet == FALSE){
-    cat(Table)
+    cat(Table,"\n")
   }
-
-
-
 
   return(Table)
 }
