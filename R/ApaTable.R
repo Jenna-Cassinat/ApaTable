@@ -25,14 +25,15 @@ LMApaTable <- function(
     estimate <- ifelse(P < .001, paste0(estimate,"\\*"), estimate)
     if(Bold == TRUE){
       estimate <- BoldFunction(P, estimate)
-    P <- ifelse(P < .001, "<.001", P)
-    P <- doublezero(P)
-    Row2 <- paste("|", VarName, "|", estimate, "|", SE, "|", P, "|")
-    if (Quiet == FALSE){
-      cat(Return)
-    }
-    Return <- paste(Return, Row2, sep = "\n")
+      P <- ifelse(P < .001, "<.001", P)
+      P <- doublezero(P)
+      Row2 <- paste("|", VarName, "|", estimate, "|", SE, "|", P, "|")
+      Return <- paste(Return, Row2, sep = "\n")
 
+    }
+  }
+  if (Quiet == FALSE){
+    cat(Return)
   }
   return(Return)
 }
@@ -77,16 +78,16 @@ AOVApaTable <- function(
       IV1 <- BoldFunction(Pvalue, IV1)}
     Data <- b$model
     RowText <- paste("|", IV1, "|")
-      for(r in FactorLevels){
-        Subdata <- subset(Data, Data[[as.character(GroupVar)]] == r)[[IV1]]
-        average <- round(mean(Subdata), 2)
-        average <- doublezero(average)
-        standD <- round(sd(Subdata), 2)
-        standD <- doublezero(standD)
-        form <- paste0(average, " (", standD, ")")
-        RowText <- paste(RowText, form, "|")
-      }
-Table <- paste(Table, RowText, sep = "\n")
+    for(r in FactorLevels){
+      Subdata <- subset(Data, Data[[as.character(GroupVar)]] == r)[[IV1]]
+      average <- round(mean(Subdata), 2)
+      average <- doublezero(average)
+      standD <- round(sd(Subdata), 2)
+      standD <- doublezero(standD)
+      form <- paste0(average, " (", standD, ")")
+      RowText <- paste(RowText, form, "|")
+    }
+    Table <- paste(Table, RowText, sep = "\n")
   }
 
   if (Quiet == FALSE){
@@ -96,7 +97,7 @@ Table <- paste(Table, RowText, sep = "\n")
 
 
 
-  #return(uniqueVar)
+  return(Table)
 }
 
 
