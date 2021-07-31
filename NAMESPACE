@@ -5,5 +5,5 @@ import(
   stats,
   stringr,
   furniture,
-  tidyverse
+  dplyr
 )

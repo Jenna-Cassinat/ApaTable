@@ -12,4 +12,4 @@ Imports:
     stats,
     stringr,
     furniture,
-    tidyverse
+    dplyr
