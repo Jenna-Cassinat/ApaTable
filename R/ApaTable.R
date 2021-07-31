@@ -141,6 +141,32 @@ if (Return == TRUE){
 }
 
 
+PieChart <- function(data,x){
+  data$x <- eval(substitute(x),data)
+  varName <- as.character(parse(text=substitute(x)))
+  FreqTab <- furniture::tableF(data,x)
 
+  FactNum <- (length(FreqTab$x$x))
+  VisTable <- data.frame(unlist(FreqTab$x$x))
+  VisTable <- VisTable %>%
+    rename(Class = unlist.FreqTab.x.x.)
+
+  for (w in nrow(VisTable)){
+    VisTable$n <- as.numeric(FreqTab$x$Freq)
+    VisTable$prop <- (as.numeric(FreqTab$x$Freq)/as.numeric(FreqTab$x$CumFreq[[FactNum]]))*100
+
+  }
+
+  VisTable <- VisTable %>%
+    mutate(ypos = cumsum(prop)- 0.5*prop )
+
+  ggplot(VisTable, aes(x="", y=n, fill=Class)) +
+    geom_bar(stat="identity", width=1) +
+    coord_polar("y", start=0)+
+    theme(legend.position="none") +
+    theme_void()
+
+
+}
 
 
