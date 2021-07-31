@@ -1,3 +1,9 @@
 export("LMApaTable")
 export("AOVApaTable")
 export("PieChart")
+import(
+  stats,
+  stringr,
+  furniture,
+  tidyverse
+)
