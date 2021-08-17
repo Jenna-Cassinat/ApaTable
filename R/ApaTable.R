@@ -133,11 +133,11 @@ AOVApaTable <- function(
   if (Quiet == FALSE){
     cat(Table,"\n")
   }
-if (Return == TRUE){
-  return(Table)
-}else{
-  invisible()
-}
+  if (Return == TRUE){
+    return(Table)
+  }else{
+    invisible()
+  }
 }
 
 
@@ -167,6 +167,81 @@ PieChart <- function(data,x){
     theme_void()
 
 
+}
+
+
+
+
+
+
+
+
+
+
+TTestTable <- function(
+  ..., Bold = FALSE, Quiet = FALSE, Return = FALSE
+){
+  models <- list(...)
+  dvcheck <- c()
+
+
+  for (p in models){
+    GroupVar <- stringr::str_match(p$data.name[[1]],"\\S+$")[1,1]
+    dvcheck <- c(dvcheck,GroupVar)
+  }
+  uniqueVar <- length(unique(dvcheck))
+  if(uniqueVar > 1){
+    stop("The grouping variables in these models do not match; change models so that each have same grouping variable.")
+  }
+
+
+  Header <- "| Variable |"
+  Next <- "|:----|"
+
+  FactorLevels <- unique(eval(parse(text=GroupVar)))
+
+  if(length(FactorLevels) != 2){
+    stop("You have the incorrect number of factors.")
+  }
+
+  for(k in FactorLevels){
+    DV1Name <- paste(k,"|")
+    Header <- paste(Header, DV1Name)
+    Next <- paste0(Next, ":--:|")
+  }
+
+  Table <- paste(Header, Next, sep= "\n")
+
+
+  for(m in models){
+    DV <- stringr::str_match(m$data.name,"(?<=\\$)\\S+(?= )")[1,1]
+    pval <- m$p.value
+    if(pval <.05){
+      DV <- paste0(DV, "\\*")
+    }
+    if(pval <.01){
+      DV <- paste0(DV, "\\*")
+    }
+    if(pval <.001){
+      DV <- paste0(DV, "\\*")
+    }
+    Mean1 <- round(m$estimate[[1]], 2)
+    Mean2 <- round(m$estimate[[2]], 2)
+    if(Bold == TRUE){
+      DV <- BoldFunction(pval, DV)
+    }
+    strg <- paste("|", DV, "|", Mean1, "|", Mean2, "|")
+    Table <- paste(Table, strg, sep = "\n")
+  }
+
+  if (Quiet == FALSE){
+    cat(Table,"\n")
+  }
+  if (Return == TRUE){
+    return(Table)
+  }else{
+    invisible()
+  }
 }
 
 
