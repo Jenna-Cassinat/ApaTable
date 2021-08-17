@@ -1,6 +1,6 @@
 BoldFunction <- function(x, y){
   y <- ifelse(x <.05, paste0("**",y, "**"), y)
-return(y)
+  return(y)
 }
 
 
