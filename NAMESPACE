@@ -1,6 +1,7 @@
 export("LMApaTable")
 export("AOVApaTable")
 export("PieChart")
+export("TTestTable")
 import(
   stats,
   stringr,
