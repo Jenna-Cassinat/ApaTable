@@ -199,6 +199,7 @@ TTestTable <- function(
   Next <- "|:----|"
 
   FactorLevels <- unique(eval(parse(text=GroupVar)))
+  FactorLevels <- FactorLevels[!is.na(FactorLevels)]
 
   if(length(FactorLevels) != 2){
     stop("You have the incorrect number of factors.")
