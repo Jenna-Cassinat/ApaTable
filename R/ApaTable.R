@@ -87,7 +87,7 @@ AOVApaTable <- function(
     post <- as.data.frame(post[[as.character(GroupVar)]])
 
     for(r in FactorLevels){
-      Subdata <- subset(Data, Data[[as.character(GroupVar)]] == r)[[IV1]]
+      Subdata <- subset(Data, Data[[as.character(GroupVar)]] == as.character(r))[[IV1]]
       average <- round(mean(Subdata), 2)
       average <- doublezero(average)
       standD <- round(sd(Subdata), 2)
