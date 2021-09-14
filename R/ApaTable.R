@@ -76,7 +76,9 @@ AOVApaTable <- function(
   for(b in models){
     IV1 <- as.character(b$call$formula[[2]])
     sumtest <- summary(b)
-    Pvalue <- sumtest[[1]][as.character(GroupVar),"Pr(>F)"]
+    dCoeffs <- as.data.frame(sumtest$coefficients)
+    Pvalue <- dCoeffs[IV1,grepl("Pr\\(\\>",colnames(dCoeffs))]
+    #Pvalue <- sumtest[[1]][as.character(GroupVar),"Pr(>F)"]
     if(Bold ==TRUE){
       IV1 <- BoldFunction(Pvalue, IV1)}
     Data <- b$model
@@ -244,5 +246,11 @@ TTestTable <- function(
     invisible()
   }
 }
+
+
+
+
+
+
 
 
