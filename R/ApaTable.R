@@ -63,7 +63,7 @@ AOVApaTable <- function(
   Header <- "| Model |"
   Next <- "|:----|"
 
-  FactorLevels <- levels(models[[1]]$model[[as.character(GroupVar)]])
+  FactorLevels <- unique(models[[1]]$model[[as.character(GroupVar)]])
 
   for(k in FactorLevels){
     DV1Name <- paste(k,"|")
