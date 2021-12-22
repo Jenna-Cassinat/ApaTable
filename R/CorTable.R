@@ -1,7 +1,7 @@
 CorTable <- function(
   dataset, # A dataframe
   table, # A correlation table supplied as output from furniture::tableC
-  labels=sapply(rownames(testtable$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE) # A vector of labels for each variable in the correlation table
+  labels=sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE) # A vector of labels for each variable in the correlation table
 ){
   if(length(labels) != nrow(table$Table1)){
     stop("The number of labels does not equal the number of variables in the table.")
@@ -60,7 +60,7 @@ CorTable <- function(
   meanline <- "\\emph{M}"
   sdline <- "\\emph{SD}"
 
-  varnames <- sapply(rownames(testtable$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE)
+  varnames <- sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE)
 
   for(y in 1:ncol(table$Table1)){
     descrip <- psych::describe(dataset[,varnames[[y]]])
