@@ -2,6 +2,7 @@ export("LMApaTable")
 export("AOVApaTable")
 export("PieChart")
 export("TTestTable")
+export("CorTable")
 import(
   stats,
   stringr,
