@@ -1,7 +1,7 @@
 CorTable <- function(
-  dataset,
-  table,
-  labels=sapply(rownames(testtable$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE)
+  dataset, # A dataframe
+  table, # A correlation table supplied as output from furniture::tableC
+  labels=sapply(rownames(testtable$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE) # A vector of labels for each variable in the correlation table
 ){
   if(length(labels) != nrow(table$Table1)){
     stop("The number of labels does not equal the number of variables in the table.")
