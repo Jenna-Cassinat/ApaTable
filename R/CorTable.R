@@ -64,8 +64,8 @@ CorTable <- function(
 
   for(y in 1:ncol(table$Table1)){
     descrip <- psych::describe(dataset[,varnames[[y]]])
-    avg <- round(descrip["mean"], 2)
-    std <- round(descrip["sd"], 2)
+    avg <- round(descrip[["mean"]], 2)
+    std <- round(descrip[["sd"]], 2)
     meanline <- paste(meanline, "&", avg)
     sdline <- paste(sdline, "&", std)
   }
