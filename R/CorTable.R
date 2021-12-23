@@ -1,13 +1,20 @@
 CorTable <- function(
   dataset, # A dataframe
   table, # A correlation table supplied as output from furniture::tableC
+  name, #This is your personal ID for the table--it will not show up.
+  caption = "Bivariate correlations and descriptive statistics of study variables", #This is the caption that shows up for your table
+  prefix = "Table ",
   labels=sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE), # A vector of labels for each variable in the correlation table
-  title="Bivariate correlations and descriptive statistics of study variables",
   Align = "S" #"c" will center it, default is "S" which requires the package "siunitx" and will align by decimal.
 ){
   if(length(labels) != nrow(table$Table1)){
     stop("The number of labels does not equal the number of variables in the table.")
   }
+
+  table_nums <- captioner::captioner(prefix = prefix, auto_space = FALSE)
+  captiontext <- table_nums(name, caption = "")
+
+  captiontext <- paste0("\\multicolumn{", ncol(table$Table1)+1, "}{l}{", captiontext, "}\\\\")
 
   table$Table1[,1] <- NULL
 
@@ -30,13 +37,11 @@ CorTable <- function(
 
   Header <- paste(Header, "\\\\")
   BeginTab <- paste(BeginTab, "}")
-  title <- paste0(title, " (N = ", n, ")")
-  title <- paste0("\\emph{", title, "}")
-  title <- paste0("\\multicolumn{", ncol(table$Table1)+1, "}{l}{", title, "}\\\\")
+  caption <- paste0(caption, " (N = ", n, ")")
+  caption <- paste0("\\emph{", caption, "}")
+  caption <- paste0("\\multicolumn{", ncol(table$Table1)+1, "}{l}{", caption, "}\\\\")
 
-  FinalText <- title
-
-  FinalText <- paste(BeginTab, FinalText, "\\hline", Header, "\\hline", sep="\n")
+  FinalText <- paste(BeginTab, captiontext, caption, "\\hline", Header, "\\hline", sep="\n")
 
   for(m in 1:nrow(table$Table1)){
     empty <- paste0(m, ". ", labels[[m]])
@@ -102,3 +107,6 @@ CorTable <- function(
 
   cat(FinalText)
 }
+
+
+
