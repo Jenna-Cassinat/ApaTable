@@ -1,7 +1,9 @@
 CorTable <- function(
   dataset, # A dataframe
   table, # A correlation table supplied as output from furniture::tableC
-  labels=sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE) # A vector of labels for each variable in the correlation table
+  labels=sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE), # A vector of labels for each variable in the correlation table
+  title="Bivariate correlations and descriptive statistics of study variables",
+  Align = "S" #"c" will center it, default is "S" which requires the package "siunitx" and will align by decimal.
 ){
   if(length(labels) != nrow(table$Table1)){
     stop("The number of labels does not equal the number of variables in the table.")
@@ -13,16 +15,28 @@ CorTable <- function(
   BeginTab <- "\\begin{tabular}{ l"
 
   Header <- "Variable"
-
   NumRow <- nrow(table$Table1)
   for(r in 1:NumRow){
     Header <- paste(Header, "&", r)
-    BeginTab <- paste0(BeginTab, "c")
+    BeginTab <- paste0(BeginTab, Align)
   }
+
+  varnames <- sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE)
+
+  datasub <- dataset[,varnames]
+
+  n <- sum(complete.cases(datasub)) # This is the number of observations # ROAD WORK #TEMP
+
+
   Header <- paste(Header, "\\\\")
   BeginTab <- paste(BeginTab, "}")
+  title <- paste0(title, " (N = ", n, ")")
+  title <- paste0("\\emph{", title, "}")
+  title <- paste0("\\multicolumn{", ncol(table$Table1)+1, "}{l}{", title, "}\\\\")
 
-  FinalText <- paste(BeginTab, "\\hline", Header, "\\hline", sep="\n")
+  FinalText <- title
+
+  FinalText <- paste(BeginTab, FinalText, "\\hline", Header, "\\hline", sep="\n")
 
   for(m in 1:nrow(table$Table1)){
     empty <- paste0(m, ". ", labels[[m]])
@@ -30,6 +44,10 @@ CorTable <- function(
       raw <- table$Table1[m,n]
       val <- stringr::str_match(raw,"^-?\\d+\\.?\\d+")[1,1]
       pVal <- stringr::str_match(raw,"(?<=\\().+(?=\\))")[1,1]
+      if(!is.na(val)){
+        val <- round(as.numeric(val), 2)
+        }
+
       if(!is.na(pVal)){
         if(pVal=="<.001")
           astrs <- "***"
@@ -42,8 +60,8 @@ CorTable <- function(
         val <- paste0(val,astrs)
       }
       if(!is.na(val)){
-        if(val== "1.00"){
-          val <-"-"
+        if(val== 1.00){
+          val <-"\\textemdash"
         }
       }
       if(is.na(val)){
@@ -59,8 +77,6 @@ CorTable <- function(
 
   meanline <- "\\emph{M}"
   sdline <- "\\emph{SD}"
-
-  varnames <- sapply(rownames(table$Table1),function(x)gsub("^\\[\\d+\\]","",x),USE.NAMES = FALSE)
 
   for(y in 1:ncol(table$Table1)){
     descrip <- psych::describe(dataset[,varnames[[y]]])
@@ -86,6 +102,3 @@ CorTable <- function(
 
   cat(FinalText)
 }
-
-
-
