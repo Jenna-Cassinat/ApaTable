@@ -38,7 +38,7 @@ CorTable <- function(
 
   # Italicize table caption if specified ----
   if(italicizeCaption)
-  caption <- paste0("\\emph{",caption,"}")
+    caption <- paste0("\\emph{",caption,"}")
 
   # Fix column names ----
   colnames(d) <- c(
