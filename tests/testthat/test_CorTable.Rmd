@@ -1,0 +1,15 @@
+---
+title: "CorTable Test"
+output: pdf_document
+header-includes: 
+  - \usepackage{siunitx}
+---
+
+```{r cars, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
+d <- mtcars[,1:5]
+CorTable(
+  dataset = d,
+  table = furniture::tableC(d),
+  name= "randomId"
+)
+```
