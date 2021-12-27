@@ -51,7 +51,7 @@ CorTable <- function(
       pVal <- stringr::str_match(raw,"(?<=\\().+(?=\\))")[1,1]
       if(!is.na(val)){
         val <- round(as.numeric(val), 2)
-        }
+      }
 
       if(!is.na(pVal)){
         if(pVal=="<.001")
