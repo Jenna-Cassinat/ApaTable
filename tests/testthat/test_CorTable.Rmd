@@ -5,21 +5,35 @@ output: pdf_document
 lot: true
 header-includes: 
   - \usepackage{siunitx}
+  #- \usepackage[singlelinecheck=false]{caption}
 ---
 
 # Test Correlation Table
 
 This is a correlation table. It looks like this:
 
-```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE, fig.cap="Oranges"}
+```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
 d <- mtcars[,1:5]
 corr <- furniture::tableC(d)
 CorTable(
   dataset = d,
   table = corr,
-  name = "randomId",
   caption = "Test table with mtcars dataset"
 )
 ```
 
 And there you have it. That's a correlation table.
+
+Here's another:
+
+```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
+d <- mtcars[1:12,6:9]
+corr <- furniture::tableC(d)
+CorTable(
+  dataset = d,
+  table = corr,
+  caption = "Another test table"
+)
+```
+
+And that's it!
