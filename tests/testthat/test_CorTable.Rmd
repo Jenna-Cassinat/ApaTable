@@ -9,12 +9,17 @@ header-includes:
 
 # Test Correlation Table
 
-```{r cars, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
+This is a correlation table. It looks like this:
+
+```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE, fig.cap="Oranges"}
 d <- mtcars[,1:5]
 corr <- furniture::tableC(d)
 CorTable(
   dataset = d,
   table = corr,
-  name= "randomId"
+  name = "randomId",
+  caption = "Test table with mtcars dataset"
 )
 ```
+
+And there you have it. That's a correlation table.
