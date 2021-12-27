@@ -12,4 +12,6 @@ Imports:
     stats,
     stringr,
     furniture,
-    dplyr
+    dplyr,
+    captioner,
+    psych
