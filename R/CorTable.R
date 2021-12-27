@@ -146,8 +146,8 @@ CorTable <- function(
   meanline <- "\\emph{M}"
   sdline <- "\\emph{SD}"
   for(i in 1:length(varnames)){
-    avg <- round(mean(dataset[,varnames[[i]]]),2)
-    std <- round(sd(dataset[,varnames[[i]]]),2)
+    avg <- round(mean(dataset[,varnames[[i]]],na.rm = TRUE),2)
+    std <- round(sd(dataset[,varnames[[i]]],na.rm = TRUE),2)
     meanline <- paste(meanline, "&", avg)
     sdline <- paste(sdline, "&", std)
   }
