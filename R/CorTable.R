@@ -11,12 +11,12 @@ CorTable <- function(
     stop("The number of labels does not equal the number of variables in the table.")
   }
 
+  table$Table1[,1] <- NULL
+
   table_nums <- captioner::captioner(prefix = prefix, auto_space = FALSE)
   captiontext <- table_nums(name, caption = "")
 
   captiontext <- paste0("\\multicolumn{", ncol(table$Table1)+1, "}{l}{", captiontext, "}\\\\")
-
-  table$Table1[,1] <- NULL
 
   FinalText <- ""
   BeginTab <- "\\begin{tabular}{ l"
