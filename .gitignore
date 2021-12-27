@@ -5,3 +5,5 @@
 **/test_CorTable.*
 !**/test_CorTable.Rmd
 !**/test_CorTable.R
+**/*.pdf
+**/nul
