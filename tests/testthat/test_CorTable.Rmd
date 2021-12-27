@@ -11,9 +11,10 @@ header-includes:
 
 ```{r cars, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
 d <- mtcars[,1:5]
+corr <- furniture::tableC(d)
 CorTable(
   dataset = d,
-  table = furniture::tableC(d),
+  table = corr,
   name= "randomId"
 )
 ```
