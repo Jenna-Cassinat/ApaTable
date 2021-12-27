@@ -1,9 +1,13 @@
 ---
 title: "CorTable Test"
 output: pdf_document
+#lof: true
+lot: true
 header-includes: 
   - \usepackage{siunitx}
 ---
+
+# Test Correlation Table
 
 ```{r cars, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
 d <- mtcars[,1:5]
