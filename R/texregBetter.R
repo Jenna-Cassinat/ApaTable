@@ -10,9 +10,10 @@ texregBetter <- function(
   )
 
   # Convert to dataframe for kablization ----
+  variableColName <- "Variables"
   d <- as.data.frame(m)
   colnames(d) <- d[1,]
-  colnames(d)[1] <- "Variables"
+  colnames(d)[1] <- variableColName
   d <- d[2:nrow(d),]
   for(rw in 1:nrow(d))
     for(cn in 1:ncol(d))
@@ -46,6 +47,18 @@ texregBetter <- function(
         d[rw,cn] <- NA
     }
   d <- d[!is.na(d[,1]),]
+  rownames(d) <- NULL
+
+  # Reorder columns for formatting ----
+  colOrder <- variableColName
+  for(i in 1:nModels)
+    colOrder <- c(
+      colOrder,
+      colnames(d)[i+1],
+      paste0(prefixSe,i),
+      paste0(prefixSb,i)
+    )
+  d <- d[,colOrder]
 
   View(d) #TEMP
   return(d) #TEMP
