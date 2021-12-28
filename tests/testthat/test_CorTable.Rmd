@@ -5,7 +5,6 @@ output: pdf_document
 lot: true
 header-includes: 
   - \usepackage{siunitx}
-  #- \usepackage[singlelinecheck=false]{caption}
 ---
 
 # Test Correlation Table
