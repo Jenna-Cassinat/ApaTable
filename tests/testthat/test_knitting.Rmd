@@ -5,6 +5,7 @@ output: pdf_document
 lot: true
 header-includes: 
   - \usepackage{siunitx}
+  - \usepackage{multirow}
 ---
 
 ```{r include=FALSE}
