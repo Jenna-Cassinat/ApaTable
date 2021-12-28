@@ -2,8 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-**/test_CorTable.*
-!**/test_CorTable.Rmd
-!**/test_CorTable.R
+**/test_knitting.*
+!**/test_knitting.Rmd
+!**/test_knitting.R
 **/*.pdf
 **/nul
