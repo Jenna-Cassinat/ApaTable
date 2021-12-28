@@ -7,11 +7,19 @@ header-includes:
   - \usepackage{siunitx}
 ---
 
+```{r include=FALSE}
+knitr::opts_chunk$set(
+  echo=FALSE,
+  message=FALSE,
+  warning=FALSE
+)
+```
+
 # CorTable
 
 This is a correlation table. It looks like this:
 
-```{r, echo=FALSE, results='asis', message=FALSE, warning=FALSE}
+```{r, results='asis'}
 d <- mtcars[,1:5]
 corr <- furniture::tableC(d)
 CorTable(
@@ -22,3 +30,12 @@ CorTable(
 ```
 
 And there you have it. That's a correlation table.
+
+# texregBetter
+
+This is what texregBetter looks like:
+
+```{r}
+```
+
+And there it is.
