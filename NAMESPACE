@@ -3,6 +3,7 @@ export("AOVApaTable")
 export("PieChart")
 export("TTestTable")
 export("CorTable")
+export("texregBetter")
 import(
   stats,
   stringr,
