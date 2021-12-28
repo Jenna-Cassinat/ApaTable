@@ -14,7 +14,6 @@ Imports:
     furniture,
     dplyr,
     captioner,
-    psych,
     kableExtra,
     uuid
 Suggests: 
