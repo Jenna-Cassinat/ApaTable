@@ -17,6 +17,7 @@ PooledResults <- function(PooledModel){
       if(grepl(":",x,fixed=TRUE)){
         final <- gsub("^[^:]+\\$","",x)
         final <- gsub("(?<=:).+\\$","",final,perl=TRUE)
+        final <- gsub(":","X",final,fixed=TRUE)
       }else
         final <- gsub("^.+\\$", "", x)
       return(final)
