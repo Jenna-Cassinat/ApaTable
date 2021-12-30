@@ -54,7 +54,7 @@ texregBetter <- function(
               d[rw,cn]
             )
           )
-        d[rw,cn] <- NA
+      d[rw,cn] <- NA
     }
   d <- d[!is.na(d[,1]),]
   rownames(d) <- NULL
