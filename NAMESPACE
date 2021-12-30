@@ -4,6 +4,7 @@ export("PieChart")
 export("TTestTable")
 export("CorTable")
 export("texregBetter")
+export("PooledResults")
 import(
   stats,
   stringr,
