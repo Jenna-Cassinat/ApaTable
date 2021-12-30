@@ -13,7 +13,6 @@ Imports:
     stringr,
     furniture,
     dplyr,
-    captioner,
     kableExtra,
     uuid,
     texreg,
