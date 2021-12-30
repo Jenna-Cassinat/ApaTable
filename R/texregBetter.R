@@ -24,9 +24,7 @@ texregBetter <- function(
     stop("Please supply a single name for each model.")
 
   # Run texreg for matrix data ----
-  m <- texreg::matrixreg(
-    l
-  )
+  m <- texreg::matrixreg(l)
 
   # Convert to dataframe for kablization ----
   variableColName <- "Variables"
