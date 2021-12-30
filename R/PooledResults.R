@@ -14,7 +14,12 @@ PooledResults <- function(PooledModel){
   names(indexvalues) <- sapply(
     as.character(PooledModel$term),
     function(x){
-      gsub("^.+\\$", "", x)
+      if(grepl(":",x,fixed=TRUE)){
+        final <- gsub("^[^:]+\\$","",x)
+        final <- gsub("(?<=:).+\\$","",final,perl=TRUE)
+      }else
+        final <- gsub("^.+\\$", "", x)
+      return(final)
     }
   )
   return(indexvalues)
