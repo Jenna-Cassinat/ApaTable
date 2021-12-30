@@ -5,8 +5,19 @@ texregBetter <- function(
   modelNames=sapply(1:length(l),function(i)paste("Model",i)),
   includeStandardBeta=TRUE,
   caption="Statistical models",
+  Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
   ... # Additional parameters to matrixreg
 ){
+
+  # Warn that the S align option currently isn't working (because it currently isn't with knitr) ----
+  if(Align=="S")
+    stop(
+      paste(
+        "The \"S\" align option currently isn't working for texregBetter.",
+        "It's a knitr problem.",
+        "... I'm so sorry."
+      )
+    )
 
   # Validate modelNames
   if(length(l)!=length(modelNames))
@@ -103,8 +114,12 @@ texregBetter <- function(
   customHeaderDetailsLine <- paste(
     sapply(
       1:nModels,
-      function(i)
-        "& $B$ & $SE$"
+      function(i){
+        if(Align=="S")
+          "& $$B$$ & $$SE$$"
+        else
+          "& $B$ & $SE$"
+      }
     ),
     collapse=" "
   )
@@ -121,12 +136,22 @@ texregBetter <- function(
   )
   final <- sub(headerPattern,customHeader,final,perl = TRUE)
 
-  # Remove all vertical lines ----
+  # Isolate begin tabular ----
   beginTab <- stringr::str_match(
     final,
     "\\\\begin\\{tabular\\}(\\[[A-z]\\])?\\{([A-z]\\|)+[A-z]\\}"
   )[1,1]
+
+  # Remove all vertical lines ----
   beginTabNoPipes <- gsub("|","",beginTab,fixed = TRUE)
+
+  # Drop in custom alignment character ----
+  alignStringPattern <- "(?<=\\{)[^\\}]+(?=\\}$)"
+  alignString <- trimws(stringr::str_match(beginTabNoPipes,alignStringPattern)[1,1])
+  alignStringNew <- paste0("l",paste(rep(Align,nchar(alignString)-1),collapse=""))
+  beginTabNoPipes <- gsub(alignStringPattern,alignStringNew,beginTabNoPipes,perl=TRUE)
+
+  # Drop in reformed begintab directive ----
   final <- sub(beginTab,beginTabNoPipes,final,fixed = TRUE)
 
   # Cat final ----
