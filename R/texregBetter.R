@@ -3,6 +3,7 @@
 texregBetter <- function(
   l,
   modelNames=sapply(1:length(l),function(i)paste("Model",i)),
+  labels=NA,
   includeStandardBeta=TRUE,
   caption="Statistical models",
   Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
@@ -42,9 +43,6 @@ texregBetter <- function(
   # Count models ----
   nModels <- ncol(d)-1
 
-  # Count variables ----
-  nVar <- which(d[,1]=="nimp")-1
-
   # Rearrange data in dataframe for standard error and eventual standard beta ----
   for(rw in 1:nrow(d))
     for(cn in 1:ncol(d))
@@ -69,6 +67,26 @@ texregBetter <- function(
     }
   d <- d[!is.na(d[,1]),]
   rownames(d) <- NULL
+
+  # Count variables ----
+  nVar <- which(d[,1]=="nimp")-1
+
+  # Drop in custom variable names if specified ----
+  if(!(all(is.na(labels))&length(labels)==1)){
+    if(length(labels)!=nVar)
+      stop(
+        paste0(
+          "If you're using the labels argument, it must be a vector of length ",
+          nVar,
+          ". You need a variable name for each of the following:\n",
+          paste(
+            paste0("\t",d[1:nVar,1]),
+            collapse="\n"
+          )
+        )
+      )
+    d[1:nVar,1] <- labels
+  }
 
   # Reorder columns for formatting ----
   colOrder <- variableColName
