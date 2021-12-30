@@ -6,6 +6,7 @@ texregBetter <- function(
   labels=NA, # Custom labels for coefficients
   includeStandardBeta=TRUE,
   caption="Statistical models",
+  hlineAfterVars=TRUE,
   Align = "c" # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
 ){
 
@@ -167,6 +168,44 @@ texregBetter <- function(
 
   # Drop in reformed begintab directive ----
   final <- sub(beginTab,beginTabNoPipes,final,fixed = TRUE)
+
+  # Remove horizontal lines ----
+  placeholder <- uuid::UUIDgenerate()
+  hlineOld <- "\\\\hline"
+  hlineNew <- "\\hline"
+  nLinesToKeep <- 2
+  for(i in 1:nLinesToKeep)
+    final <- sub(
+      hlineOld,
+      placeholder,
+      final
+    )
+  final <- gsub(
+    hlineOld,
+    "",
+    final
+  )
+  final <- gsub(
+    placeholder,
+    hlineNew,
+    final,
+    fixed = TRUE
+  )
+
+  # Add horizontal line after variables if specified ----
+  if(hlineAfterVars)
+    final <- kableExtra::row_spec(
+      final,
+      nVar,
+      hline_after=TRUE
+    )
+
+  # Add horizontal line after data ----
+  final <- kableExtra::row_spec(
+    final,
+    nrow(d),
+    hline_after=TRUE
+  )
 
   # Cat final ----
   cat(final)
