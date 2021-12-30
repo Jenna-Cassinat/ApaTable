@@ -72,6 +72,12 @@ texregBetter <- function(
   # Rename all columns ----
   colnames(d) <- 1:ncol(d)
 
+  # Remove NAs ----
+  for(rw in 1:nrow(d))
+    for(cn in 1:ncol(d))
+      if(is.na(d[rw,cn]))
+        d[rw,cn] <- ""
+
   # Kablize table ----
   final <- knitr::kable(
     d,
