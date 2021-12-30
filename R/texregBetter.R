@@ -207,6 +207,21 @@ texregBetter <- function(
     hline_after=TRUE
   )
 
+  # Add p-value reference ----
+  pvalText <- "*\\emph{p} \\textless .05, **\\emph{p} \\textless .01, ***\\emph{p} \\textless .001"
+  pvalLine <- paste0("\\multicolumn{", ncol(d), "}{l}{", pvalText, "}\\\\")
+  endTab <- "\\end{tabular}"
+  final <- gsub(
+    endTab,
+    paste(
+      pvalLine,
+      endTab,
+      collapse="\n"
+    ),
+    final,
+    fixed=TRUE
+  )
+
   # Cat final ----
   cat(final)
 
