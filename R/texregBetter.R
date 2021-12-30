@@ -25,8 +25,7 @@ texregBetter <- function(
 
   # Run texreg for matrix data ----
   m <- texreg::matrixreg(
-    l,
-    ...
+    l
   )
 
   # Convert to dataframe for kablization ----
