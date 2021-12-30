@@ -6,7 +6,7 @@ texregBetter <- function(
   labels=NA, # Custom labels for coefficients
   includeStandardBeta=TRUE,
   caption="Statistical models",
-  Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
+  Align = "c" # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
 ){
 
   # Warn that the S align option currently isn't working (because it currently isn't with knitr) ----
