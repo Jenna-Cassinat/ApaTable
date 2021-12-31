@@ -5,6 +5,7 @@ export("TTestTable")
 export("CorTable")
 export("texregBetter")
 export("PooledResults")
+export("SEMModFit")
 import(
   stats,
   stringr,
