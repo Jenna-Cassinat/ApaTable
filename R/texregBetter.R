@@ -7,7 +7,8 @@ texregBetter <- function(
   includeStandardBeta=TRUE, # Not currently used
   caption="Statistical models",
   hlineAfterVars=TRUE,
-  Align = "c" # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
+  Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
+  includeOddsRatio = rep(FALSE,length(l)) # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
 ){
 
   # Warn that the S align option currently isn't working (because it currently isn't with knitr) ----
@@ -23,6 +24,10 @@ texregBetter <- function(
   # Validate modelNames
   if(length(l)!=length(modelNames))
     stop("Please supply a single name for each model.")
+
+  # Validate includeOddsRatio ----
+  if(length(includeOddsRatio!=length(l)))
+    stop("includeOddsRatio should be a T/F vector with a value for each model.")
 
   # Run texreg for matrix data ----
   m <- texreg::matrixreg(l)
