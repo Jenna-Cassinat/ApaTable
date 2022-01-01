@@ -69,7 +69,9 @@ for(i in 1:ncol(coefNamesSquare))
 coefNames <- gsub("^.+\\$","",unique(coefNames))
 texregBetter(
   l = lapply(mList,mice::pool),
-  labels = coefNames
+  labels = coefNames,
+  caption = "texregBetter"
+)
 )
 ```
 
