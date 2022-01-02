@@ -6,6 +6,7 @@ export("CorTable")
 export("texregBetter")
 #export("texregBetterGLM")
 export("PooledResults")
+export("PooledResultsGLM")
 export("SEMModFit")
 import(
   stats,
