@@ -27,3 +27,22 @@ PooledResultsGLM <- function(Call){
   )
   return(indexvalues)
 }
+
+# Testing #TEMP ----
+#
+# tbcImp <- mice::mice(
+#   mice::tbc,
+#   m=5,
+#   maxit=5,
+#   meth='pmm',
+#   print=FALSE
+# )
+# m1 <- with(
+#   tbcImp,
+#   glm(
+#     tbcImp$data$ao~tbcImp$data$age
+#     +tbcImp$data$sex*tbcImp$data$hgt.z*tbcImp$data$wgt.z*tbcImp$data$bmi.z,
+#     family=binomial
+#   )
+# )
+# PooledResultsGLM(m1)
