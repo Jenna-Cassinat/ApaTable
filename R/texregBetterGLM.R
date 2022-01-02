@@ -1,4 +1,4 @@
-texregBetterGlm <- function(
+texregBetterGLM <- function(
   l,
   modelNames=sapply(1:length(l),function(i)paste("Model",i)),
   labels=NA, # Custom labels for coefficients

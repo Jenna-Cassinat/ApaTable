@@ -4,7 +4,7 @@ export("PieChart")
 export("TTestTable")
 export("CorTable")
 export("texregBetter")
-#export("texregBetterGlm")
+#export("texregBetterGLM")
 export("PooledResults")
 export("SEMModFit")
 import(
