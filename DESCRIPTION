@@ -17,7 +17,8 @@ Imports:
     uuid,
     texreg,
     mice,
-    papaja
+    papaja,
+    questionr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

@@ -1,6 +1,6 @@
 PooledResultsGLM <- function(Call){
   indexvalues <- list()
-  PooledModel <- summary(pool(Call))
+  PooledModel <- summary(mice::pool(Call))
   for(m in 1:nrow(PooledModel)){
     text <- paste0(
       "*b* = ",
@@ -8,7 +8,7 @@ PooledResultsGLM <- function(Call){
       ", *SE* = ",
       round(PooledModel$std.error[[m]],2),
       " OR = ",
-      round(odds.ratio(Call$analyses[[1]])[[1]][[m]], 2),
+      round(questionr::odds.ratio(Call$analyses[[1]])[[1]][[m]], 2),
       ", *p* ",
       papaja::printp(PooledModel$p.value[[m]], add_equals = TRUE)
     )
