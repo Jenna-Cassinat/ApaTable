@@ -18,8 +18,7 @@ PooledResultsGLM <- function(Call){
     as.character(PooledModel$term),
     function(x){
       if(grepl(":",x,fixed=TRUE)){
-        final <- gsub("^[^:]+\\$","",x)
-        final <- gsub("(?<=:).+\\$","",final,perl=TRUE)
+        final <- gsub("[^:]+\\$","",x)
         final <- gsub(":","X",final,fixed=TRUE)
       }else
         final <- gsub("^.+\\$", "", x)
