@@ -26,7 +26,7 @@ texregBetter <- function(
     stop("Please supply a single name for each model.")
 
   # Validate includeOddsRatio ----
-  if(length(includeOddsRatio!=length(l)))
+  if(length(includeOddsRatio)!=length(l))
     stop("includeOddsRatio should be a T/F vector with a value for each model.")
 
   # Run texreg for matrix data ----
@@ -44,6 +44,14 @@ texregBetter <- function(
 
   # Count models ----
   nModels <- ncol(d)-1
+
+  # Tag model columns in dataframe for now ----
+  prefixM <- paste0(uuid::UUIDgenerate(),"_")
+  colnames(d)[2:ncol(d)] <- sapply(
+    1:nModels,
+    function(i)
+      paste0(prefixM,i)
+  )
 
   # Rearrange data in dataframe for standard error and eventual standard beta ----
   for(rw in 1:nrow(d))
@@ -73,6 +81,35 @@ texregBetter <- function(
   # Count variables ----
   nVar <- which(d[,1]=="nimp")-1
 
+  # Add in odds ratios if specified ----
+  prefixOr <- paste0(uuid::UUIDgenerate(),"_")
+  for(i in 1:nModels)
+    if(includeOddsRatio[i]){
+      d[,paste0(prefixOr,i)] <- sapply(
+        1:nrow(d),
+        function(j){
+          x <- d[,i+1][[j]]
+          if(j>nVar)
+            return(NA)
+          if(d[j,1]=="(Intercept)")
+            return(NA)
+          if(is.na(x))
+            return(x)
+          beta <- as.numeric(
+            trimws(
+              gsub(
+                "\\*",
+                "",
+                x
+              )
+            )
+          )
+          final <- round(exp(beta),2)
+          return(final)
+        }
+      )
+    }
+
   # Drop in custom variable names if specified ----
   if(!(all(is.na(labels))&length(labels)==1)){
     if(length(labels)!=nVar)
@@ -92,16 +129,19 @@ texregBetter <- function(
 
   # Reorder columns for formatting ----
   colOrder <- variableColName
-  for(i in 1:nModels)
+  for(i in 1:nModels){
     colOrder <- c(
       colOrder,
-      colnames(d)[i+1],
+      paste0(prefixM,i),
       paste0(prefixSe,i)
     )
+    if(includeOddsRatio[i])
+      colOrder <- c(
+        colOrder,
+        paste0(prefixOr,i)
+      )
+  }
   d <- d[,colOrder]
-
-  # Rename all columns ----
-  colnames(d) <- 1:ncol(d)
 
   # Remove NAs ----
   for(rw in 1:nrow(d))
@@ -117,13 +157,17 @@ texregBetter <- function(
   )
 
   # Drop in custom header ----
-  headerPattern <- "(?<=\\\\hline\\n)[^\\\\\\\\]+\\\\\\\\"
+  headerPattern <- "(?<=\\\\hline\n)[^\\n]+\\\\\\\\"
   customHeaderVarCell <- paste0("\\\\multirow{2}{*}{",variableColName,"} \\\\\\\\")
   customHeaderModelNamesLine <- paste(
     sapply(
-      modelNames,
-      function(x)
-        paste0("& \\\\multicolumn{2}{c}{",x,"}")
+      1:nModels,
+      function(i){
+        modelName <- modelNames[i]
+        nColsToSpan <- length(grep(paste0(i,"$"),colnames(d)))
+        final <- paste0("& \\\\multicolumn{",nColsToSpan,"}{c}{",modelName,"}")
+        return(final)
+      }
     ),
     collapse=" "
   )
@@ -135,10 +179,19 @@ texregBetter <- function(
     sapply(
       1:nModels,
       function(i){
+        dSign <- uuid::UUIDgenerate()
+        baseString <- glue::glue("& {dSign}B{dSign} & {dSign}SE{dSign}")
+        if(includeOddsRatio[i])
+          baseString <- paste(
+            baseString,
+            glue::glue("& {dSign}OR{dSign}")
+          )
         if(Align=="S")
-          "& $$B$$ & $$SE$$"
+          dSignTrue <- "$$"
         else
-          "& $B$ & $SE$"
+          dSignTrue <- "$"
+        final <- gsub(dSign,dSignTrue,baseString,fixed=TRUE)
+        return(final)
       }
     ),
     collapse=" "
