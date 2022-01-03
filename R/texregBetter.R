@@ -92,7 +92,7 @@ texregBetter <- function(
           if(j>nVar)
             return(NA)
           if(d[j,1]=="(Intercept)")
-            return(NA)
+            return(intToUtf8(8212))
           if(is.na(x))
             return(x)
           beta <- as.numeric(
@@ -143,6 +143,12 @@ texregBetter <- function(
   }
   d <- d[,colOrder]
 
+  # Rename nimps and nobs rows for later ----
+  placeholdNimp <- uuid::UUIDgenerate()
+  placeholdNobs <- uuid::UUIDgenerate()
+  d[d[,1]=="nimp",1] <- placeholdNimp
+  d[d[,1]=="nobs",1] <- placeholdNobs
+
   # Remove NAs ----
   for(rw in 1:nrow(d))
     for(cn in 1:ncol(d))
@@ -155,6 +161,17 @@ texregBetter <- function(
     "latex",
     caption=caption
   )
+
+  # Drop in actual names for imps and nobs rows ----
+  nimpsNobsPlaceholders <- c(placeholdNimp,placeholdNobs)
+  nimpsNobsNames <- c("$N$ Imputations","$N$ Observations")
+  for(i in 1:length(nimpsNobsPlaceholders))
+    final <- gsub(
+      nimpsNobsPlaceholders[i],
+      nimpsNobsNames[i],
+      final,
+      fixed=TRUE
+    )
 
   # Drop in custom header ----
   headerPattern <- "(?<=\\\\hline\n)[^\\n]+\\\\\\\\"
@@ -184,7 +201,7 @@ texregBetter <- function(
         if(includeOddsRatio[i])
           baseString <- paste(
             baseString,
-            glue::glue("& {dSign}OR{dSign}")
+            glue::glue("& OR")
           )
         if(Align=="S")
           dSignTrue <- "$$"
