@@ -8,7 +8,8 @@ texregBetter <- function(
   caption="Statistical models",
   hlineAfterVars=TRUE,
   Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
-  includeOddsRatio = rep(FALSE,length(l)) # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
+  includeOddsRatio = rep(FALSE,length(l)), # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
+  rotate=FALSE # You need \usepackage{rotating} to do this
 ){
 
   # Warn that the S align option currently isn't working (because it currently isn't with knitr) ----
@@ -161,6 +162,15 @@ texregBetter <- function(
     "latex",
     caption=caption
   )
+
+  # Rotate table if specified ----
+  if(rotate)
+    final <- gsub(
+      "((?<=\\\\begin\\{)table(?=\\})|(?<=\\\\end\\{)table(?=\\}))",
+      "sidewaystable",
+      final,
+      perl=TRUE
+    )
 
   # Drop in actual names for imps and nobs rows ----
   nimpsNobsPlaceholders <- c(placeholdNimp,placeholdNobs)

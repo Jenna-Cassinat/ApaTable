@@ -6,6 +6,7 @@ lot: true
 header-includes: 
   - \usepackage{siunitx}
   - \usepackage{multirow}
+  - \usepackage{rotating}
 ---
 
 ```{r include=FALSE}

@@ -6,7 +6,8 @@ texregBetterGLM <- function(
   caption="Statistical models",
   hlineAfterVars=TRUE,
   Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
-  includeOddsRatio = rep(TRUE,length(l)) # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
+  includeOddsRatio = rep(TRUE,length(l)), # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
+  rotate=TRUE
 )
   texregBetter(
     l,
@@ -16,5 +17,6 @@ texregBetterGLM <- function(
     caption=caption,
     hlineAfterVars=hlineAfterVars,
     Align=Align,
-    includeOddsRatio=includeOddsRatio
+    includeOddsRatio=includeOddsRatio,
+    rotate=rotate
   )
