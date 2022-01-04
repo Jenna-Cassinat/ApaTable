@@ -4,7 +4,7 @@ CorTable <- function(
   caption = "Bivariate correlations and descriptive statistics of study variables", # The caption that shows up for the correlation table
   labels = NA, # A vector of labels for each variable in the correlation table
   Align = "S", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
-  italicizeCaption = TRUE
+  italicizeCaption = FALSE
 ){
 
   # Validate labels argument ----
