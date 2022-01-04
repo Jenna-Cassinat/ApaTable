@@ -175,6 +175,14 @@ texregBetter <- function(
     caption=caption
   )
 
+  # Remove spaces before p-value asterisks ----
+  final <- gsub(
+    " *",
+    "*",
+    final,
+    fixed=TRUE
+  )
+
   # Rotate table if specified ----
   if(rotate)
     final <- gsub(
