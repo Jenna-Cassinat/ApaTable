@@ -7,6 +7,7 @@ texregBetterGLM <- function(
   hlineAfterVars=TRUE,
   Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
   includeOddsRatio = rep(TRUE,length(l)), # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
+  resize=FALSE,
   rotate=TRUE
 )
   texregBetter(
@@ -18,5 +19,6 @@ texregBetterGLM <- function(
     hlineAfterVars=hlineAfterVars,
     Align=Align,
     includeOddsRatio=includeOddsRatio,
+    resize=resize,
     rotate=rotate
   )

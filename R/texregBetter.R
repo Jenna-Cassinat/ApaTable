@@ -9,6 +9,7 @@ texregBetter <- function(
   hlineAfterVars=TRUE,
   Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
   includeOddsRatio = rep(FALSE,length(l)), # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
+  resize=FALSE,
   rotate=FALSE # You need \usepackage{rotating} to do this
 ){
 
@@ -279,6 +280,13 @@ texregBetter <- function(
   alignStringNew <- paste0("l",paste(rep(Align,nchar(alignString)-1),collapse=""))
   beginTabNoPipes <- gsub(alignStringPattern,alignStringNew,beginTabNoPipes,perl=TRUE)
 
+  # Add resize opener if specified ----
+  if(resize)
+    beginTabNoPipes <- paste0(
+      "\\resizebox{\\columnwidth}{!}{",
+      beginTabNoPipes
+    )
+
   # Drop in reformed begintab directive ----
   final <- sub(beginTab,beginTabNoPipes,final,fixed = TRUE)
 
@@ -320,15 +328,19 @@ texregBetter <- function(
     hline_after=TRUE
   )
 
-  # Add p-value reference ----
+  # Add p-value reference and add resize closer if specified ----
   pvalText <- "*\\emph{p} \\textless .05, **\\emph{p} \\textless .01, ***\\emph{p} \\textless .001"
   pvalLine <- paste0("\\multicolumn{", ncol(d), "}{l}{", pvalText, "}\\\\")
   endTab <- "\\end{tabular}"
+  closer <- ""
+  if(resize)
+    closer <- "}"
   final <- gsub(
     endTab,
     paste(
       pvalLine,
       endTab,
+      closer,
       collapse="\n"
     ),
     final,
