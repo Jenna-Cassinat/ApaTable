@@ -23,6 +23,18 @@ texregBetter <- function(
     )
 
   # Validate modelNames
+  if(class(modelNames)!="character")
+    stop(
+      paste(
+        "modelNames should be a character vector.",
+        "YOU MIGHT BE GETTING THIS ERROR BECAUSE YOU ARE SUPPLYING MULTIPLE MODELS",
+        "THAT AREN'T IN A LIST.",
+        "THE CALL SHOULD BE SOMETHING LIKE texregBetter(list(m1,m2,m3),caption=\"oranges\",etc.),",
+        "POINT BEING THAT THE MODELS ARE IN A LIST."
+      )
+    )
+  if(is.list(modelNames))
+    stop("modelNames should be a vector.")
   if(length(l)!=length(modelNames))
     stop("Please supply a single name for each model.")
 
