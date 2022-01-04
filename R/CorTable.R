@@ -86,7 +86,7 @@ CorTable <- function(
       }
       if(!is.na(val)){
         if(val== 1.00){
-          val <- "\\textemdash" #TEMP
+          val <- "\\textemdash"
         }
       }
       if(is.na(val)){
