@@ -5,6 +5,7 @@ CorTable <- function(
   labels = NA, # A vector of labels for each variable in the correlation table
   Align = "S", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
   italicizeCaption = FALSE,
+  resize=FALSE,
   rotate=FALSE # You need \usepackage{rotating} to do this
 ){
 
@@ -121,12 +122,17 @@ CorTable <- function(
       perl=TRUE
     )
 
-  # Remove all vertical lines ----
+  # Remove all vertical lines and drop in resize opener if specified ----
   beginTab <- stringr::str_match(
     final,
     "\\\\begin\\{tabular\\}(\\[[A-z]\\])?\\{([A-z]\\|)+[A-z]\\}"
   )[1,1]
   beginTabNoPipes <- gsub("|","",beginTab,fixed = TRUE)
+  if(resize)
+    beginTabNoPipes <- paste0(
+      "\\resizebox{\\columnwidth}{!}{",
+      beginTabNoPipes
+    )
   final <- sub(beginTab,beginTabNoPipes,final,fixed = TRUE)
 
   # Remove all inner horizontal lines in output ----
@@ -171,6 +177,18 @@ CorTable <- function(
     nrow(d),
     extra_latex_after = footer
   )
+
+  # Add resize closer if specified ----
+  if(resize){
+    endTab <- "\\end{tabular}"
+    endTabWithCloser <- paste0(endTab,"}")
+    final <- gsub(
+      endTab,
+      endTabWithCloser,
+      final,
+      fixed=TRUE
+    )
+  }
 
   # Cat results ----
   cat(final)
