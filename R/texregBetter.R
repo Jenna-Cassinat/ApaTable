@@ -195,6 +195,14 @@ texregBetter <- function(
       fixed=TRUE
     )
 
+  # Fix R^2 formatting ----
+  final <- gsub(
+    "R\\textasciicircum{}2",
+    "$R^2$",
+    final,
+    fixed=TRUE
+  )
+
   # Drop in custom header ----
   headerPattern <- "(?<=\\\\hline\n)[^\\n]+\\\\\\\\"
   customHeaderVarCell <- paste0("\\\\multirow{2}{*}{",variableColName,"} \\\\\\\\")
