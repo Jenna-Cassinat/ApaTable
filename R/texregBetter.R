@@ -169,6 +169,11 @@ texregBetter <- function(
       if(is.na(d[rw,cn]))
         d[rw,cn] <- ""
 
+  # Format caption ----
+  caption <- glue::glue(
+    "\\\\~\\\\ \\textit{{{caption}}}"
+  )
+
   # Kablize table ----
   final <- knitr::kable(
     d,
