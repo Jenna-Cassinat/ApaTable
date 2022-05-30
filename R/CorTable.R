@@ -1,12 +1,12 @@
 CorTable <- function(
-  dataset, # A dataframe
-  table, # A correlation table supplied as output from furniture::tableC(dataset)
-  caption = "Bivariate correlations and descriptive statistics of study variables", # The caption that shows up for the correlation table
-  labels = NA, # A vector of labels for each variable in the correlation table
-  Align = "S", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
-  italicizeCaption = FALSE,
-  resize=FALSE,
-  rotate=FALSE # You need \usepackage{rotating} to do this
+    dataset, # A dataframe
+    table, # A correlation table supplied as output from furniture::tableC(dataset)
+    caption = "Bivariate correlations and descriptive statistics of study variables", # The caption that shows up for the correlation table
+    labels = NA, # A vector of labels for each variable in the correlation table
+    Align = "S", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
+    italicizeCaption = TRUE,
+    resize=FALSE,
+    rotate=FALSE # You need \usepackage{rotating} to do this
 ){
 
   # Validate labels argument ----
@@ -40,7 +40,9 @@ CorTable <- function(
 
   # Italicize table caption if specified ----
   if(italicizeCaption)
-    caption <- paste0("\\emph{",caption,"}")
+    caption <- glue::glue(
+      "\\\\~\\\\ \\textit{{{caption}}}"
+    )
 
   # Fix column names ----
   colnames(d) <- c(
