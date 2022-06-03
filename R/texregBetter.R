@@ -6,6 +6,7 @@ texregBetter <- function(
   labels=NA, # Custom labels for coefficients
   includeStandardBeta=TRUE, # Not currently used
   caption="Statistical models",
+  captionTOC=NA,
   hlineAfterVars=TRUE,
   Align = "c", # "c" to center column values, "S" to align values by decimal (requires latex package "siunitx")
   includeOddsRatio = rep(FALSE,length(l)), # This is the primary argument in the texregBetter shorthand; no need to mess with it here.
@@ -180,6 +181,15 @@ texregBetter <- function(
     "latex",
     caption=caption
   )
+
+  # Add TOC caption if specified ----
+  if(!is.na(captionTOC))
+    final <- gsub(
+      "\\caption{",
+      glue::glue("\\caption[{captionTOC}]{{"),
+      final,
+      fixed=TRUE
+    )
 
   # Remove spaces before p-value asterisks ----
   final <- gsub(
