@@ -1,7 +1,7 @@
 Package: Reports
 Type: Package
 Title: A Quick Dirty way to create reports
-Version: 0.1.0
+Version: 0.2.0
 Author: Wouldn't you like to know
 Maintainer: Susie Q. <susieq@gmail.com>
 Description: This takes regression models that were created using the lm function and puts them into a semi-correct APA table.

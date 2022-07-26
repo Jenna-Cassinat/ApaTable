@@ -8,6 +8,9 @@ export("texregBetterGLM")
 export("PooledResults")
 export("PooledResultsGLM")
 export("SEMModFit")
+export("MultFreq")
+export("CrossTab")
+export("countGraph")
 import(
   stats,
   stringr,
