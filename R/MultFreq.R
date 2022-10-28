@@ -21,7 +21,6 @@ MultFreq <- function(data,
 
   countab$Variables <- unlist(countab$Variables)
   countab$Levels <- unlist(countab$Levels)
-  str(countab)
 
   ggplot(countab, aes(fill=Levels, y=Variables)) +  geom_bar(position="fill")+
     labs(x = gg_xlab, y = gg_ylab)+
