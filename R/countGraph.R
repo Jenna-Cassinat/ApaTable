@@ -6,8 +6,10 @@ countGraph <- function(
     gg_color="#1a69af",
     gg_xlab="Frequency",
     gg_fill=gg_color,
-    colNames=NA
+    colNames=NA,
+    debuggingMode=FALSE
 ){
+  hasError <- FALSE
   if(length(colNames!=1))
     if(!all(is.na(colNames)))
       if(length(colNames)!=length(varNames))
@@ -25,13 +27,19 @@ countGraph <- function(
     else
       lbl <- colName
     ct <- length(data[[varName]][!is.na(data[[varName]])])
-    df <- rbind(
-      df,
-      data.frame(
-        Names=lbl,
-        Freq=ct
-      )
+    tryCatch(
+      df <- rbind(
+        df,
+        data.frame(
+          Names=lbl,
+          Freq=ct
+        )
+      ),
+      error=function(x)
+        hasError <<- TRUE
     )
+    if(debuggingMode&hasError)
+      browser()
   }
   ggplot(df, aes(x=Freq, y = Names))+
     geom_bar(stat="identity", color=gg_color, fill=gg_fill)+
