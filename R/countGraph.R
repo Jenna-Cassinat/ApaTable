@@ -20,10 +20,16 @@ countGraph <- function(
       df <- data.frame()
     colName <- colNames[i]
     varName <- varNames[i]
-    if(is.na(colName))
-      lbl <- names(attributes(data[[varName]])$labels)
-    else
-      lbl <- colName
+    tryCatch(
+      {
+        if(is.na(colName))
+          lbl <- names(attributes(data[[varName]])$labels)
+        else
+          lbl <- colName
+      },
+      error=function(x)
+        browser()
+    )
     ct <- length(data[[varName]][!is.na(data[[varName]])])
     df <- rbind(
       df,
